@@ -36,30 +36,30 @@ var gummiData = [
             caption: 'Gummi Blast',
             url: 'https://images.unsplash.com/photo-1524821902305-7b8dc7ed4e41?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a70045eb8f99f2a44c2ac0f244de7afe'}
           ];
-var showCard = function(event) {
-  var cardContainers = document.querySelectorAll('.card-container');
-  var cards = document.querySelectorAll('.card');
+
+var showModal = function(event) {
+  var modalContainers = document.querySelectorAll('.modal-container');
+  var modals = document.querySelectorAll('.modal');
   cover.classList.add('cover-show');
-  cardContainers[event.target.dataset.index].classList.add('show');
-  cards[event.target.dataset.index].classList.add('fix-click');
+  modalContainers[event.target.dataset.index].classList.add('show');
+  modals[event.target.dataset.index].classList.add('fix-click');
 }
 
-var hideCard = function() {
-  console.log('clicked');
-  var cardContainers = document.querySelectorAll('.card-container');
-  var cards = document.querySelectorAll('.card');
+var hideModal = function() {
+  var modalContainers = document.querySelectorAll('.modal-container');
+  var modals = document.querySelectorAll('.modal');
   cover.classList.remove('cover-show');
-  for (var i = 0; i < cardContainers.length; i++) {
-    cardContainers[i].classList.remove('show');
+  for (var i = 0; i < modalContainers.length; i++) {
+    modalContainers[i].classList.remove('show');
   }
-  for (var i = 0; i < cards.length; i++) {
-    cards[i].classList.remove('fix-click');
+  for (var i = 0; i < modals.length; i++) {
+    modals[i].classList.remove('fix-click');
   }
 }
 
-var gummiList = document.createElement('ul');
-gummiList.classList.add('gummi-list');
+var gummiList = document.querySelector('.gummi-list');
 
+// Create list
 for (var i = 0; i < gummiData.length; i++) {
   var gummiItem = document.createElement('li');
   gummiItem.classList.add('gummi-item');
@@ -102,76 +102,66 @@ for (var i = 0; i < gummiData.length; i++) {
   gummiCommentButton.dataset.index = i;
   gummiButtonContainer.appendChild(gummiCommentButton);
 }
-document.body.appendChild(gummiList);
 
-var cover = document.createElement('div');
-cover.classList.add('cover');
-
-document.body.appendChild(cover);
-
+// Create Modals
 for (var i = 0; i < gummiData.length; i++) {
-  var cardContainer = document.createElement('div');
-  cardContainer.classList.add('card-container');
-  var card = document.createElement('div');
-  card.classList.add('card');
+  var modalContainer = document.createElement('div');
+  modalContainer.classList.add('modal-container');
+  var modal = document.createElement('div');
+  modal.classList.add('modal');
 
-  var cardImage = document.createElement('img');
-  cardImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=800&q=60');
-  cardImage.classList.add('card-image');
-  card.appendChild(cardImage);
+  var modalImage = document.createElement('img');
+  modalImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=800&q=60');
+  modalImage.classList.add('modal-image');
+  modal.appendChild(modalImage);
 
-  var cardContents = document.createElement('div');
-  cardContents.classList.add('card-contents');
+  var modalContents = document.createElement('div');
+  modalContents.classList.add('modal-contents');
 
-  var cardClose = document.createElement('div');
-  cardClose.textContent = 'X';
-  cardClose.classList.add('card-close');
-  cardClose.dataset.index = i;
-  cardContents.appendChild(cardClose);
+  var modalClose = document.createElement('div');
+  modalClose.textContent = 'X';
+  modalClose.classList.add('modal-close');
+  modalClose.dataset.index = i;
+  modalContents.appendChild(modalClose);
 
-  cardClose.addEventListener('click', hideCard);
+  modalClose.addEventListener('click', hideModal);
 
-  var cardCommentContainer = document.createElement('div');
-  cardCommentContainer.classList.add('card-comment-container');
-  cardContents.appendChild(cardCommentContainer);
+  var modalCommentContainer = document.createElement('div');
+  modalCommentContainer.classList.add('modal-comment-container');
+  modalContents.appendChild(modalCommentContainer);
 
 
   for (var j = 0; j < gummiData[i].comments.length; j++) {
-    var cardComment = document.createElement('p');
-    cardComment.textContent = gummiData[i].comments[j];
-    cardCommentContainer.appendChild(cardComment);
+    var modalComment = document.createElement('p');
+    modalComment.textContent = gummiData[i].comments[j];
+    modalCommentContainer.appendChild(modalComment);
   }
 
-  var cardLikes = document.createElement('div');
-  cardLikes.textContent = 'Likes: ' + gummiData[i].likes;
-  cardLikes.classList.add('card-likes');
-  cardContents.appendChild(cardLikes);
+  var modalLikes = document.createElement('div');
+  modalLikes.textContent = 'Likes: ' + gummiData[i].likes;
+  modalLikes.classList.add('modal-likes');
+  modalContents.appendChild(modalLikes);
 
-  card.appendChild(cardContents);
-  cardContainer.appendChild(card);
-  document.body.appendChild(cardContainer);
+  modal.appendChild(modalContents);
+
+  modalContainer.appendChild(modal);
+  document.body.appendChild(modalContainer);
 }
 
+// Event Listeners
 var gummiImages = document.querySelectorAll('.gummi-image');
-
 for (var i = 0; i < gummiImages.length; i++) {
-  gummiImages[i].addEventListener('click', showCard);
+  gummiImages[i].addEventListener('click', showModal);
 }
 
 var commentButtons = document.querySelectorAll('.comment-button');
-
 for (var i = 0; i < commentButtons.length; i++) {
-  commentButtons[i].addEventListener('click', showCard);
+  commentButtons[i].addEventListener('click', showModal);
 }
 
+var cover = document.querySelector('.cover');
 cover.addEventListener('click', () => {
   if (event.target == event.currentTarget){
-    hideCard();
+    hideModal();
   }
 });
-
-// document.addEventListener('click', (event) => {
-//   if (gummiImages.indexOf(event.target) != -1) {
-//     document.body.removeChild(event.target)
-//   }
-// })
