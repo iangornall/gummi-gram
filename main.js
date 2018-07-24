@@ -36,6 +36,27 @@ var gummiData = [
             caption: 'Gummi Blast',
             url: 'https://images.unsplash.com/photo-1524821902305-7b8dc7ed4e41?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a70045eb8f99f2a44c2ac0f244de7afe'}
           ];
+var showCard = function(event) {
+  var cardContainers = document.querySelectorAll('.card-container');
+  var cards = document.querySelectorAll('.card');
+  cover.classList.add('cover-show');
+  cardContainers[event.target.dataset.index].classList.add('show');
+  cards[event.target.dataset.index].classList.add('fix-click');
+}
+
+var hideCard = function() {
+  console.log('clicked');
+  var cardContainers = document.querySelectorAll('.card-container');
+  var cards = document.querySelectorAll('.card');
+  cover.classList.remove('cover-show');
+  for (var i = 0; i < cardContainers.length; i++) {
+    cardContainers[i].classList.remove('show');
+  }
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].classList.remove('fix-click');
+  }
+}
+
 var gummiList = document.createElement('ul');
 gummiList.classList.add('gummi-list');
 
@@ -89,6 +110,8 @@ cover.classList.add('cover');
 document.body.appendChild(cover);
 
 for (var i = 0; i < gummiData.length; i++) {
+  var cardContainer = document.createElement('div');
+  cardContainer.classList.add('card-container');
   var card = document.createElement('div');
   card.classList.add('card');
 
@@ -106,11 +129,7 @@ for (var i = 0; i < gummiData.length; i++) {
   cardClose.dataset.index = i;
   cardContents.appendChild(cardClose);
 
-  cardClose.addEventListener('click', (event) => {
-    var cards = document.querySelectorAll('.card');
-    cover.classList.remove('cover-show');
-    cards[event.currentTarget.dataset.index].classList.remove('show');
-  })
+  cardClose.addEventListener('click', hideCard);
 
   var cardCommentContainer = document.createElement('div');
   cardCommentContainer.classList.add('card-comment-container');
@@ -129,13 +148,8 @@ for (var i = 0; i < gummiData.length; i++) {
   cardContents.appendChild(cardLikes);
 
   card.appendChild(cardContents);
-  document.body.appendChild(card);
-}
-
-var showCard = function(event) {
-  var cards = document.querySelectorAll('.card');
-  cover.classList.add('cover-show');
-  cards[event.target.dataset.index].classList.add('show');
+  cardContainer.appendChild(card);
+  document.body.appendChild(cardContainer);
 }
 
 var gummiImages = document.querySelectorAll('.gummi-image');
@@ -149,6 +163,12 @@ var commentButtons = document.querySelectorAll('.comment-button');
 for (var i = 0; i < commentButtons.length; i++) {
   commentButtons[i].addEventListener('click', showCard);
 }
+
+cover.addEventListener('click', () => {
+  if (event.target == event.currentTarget){
+    hideCard();
+  }
+});
 
 // document.addEventListener('click', (event) => {
 //   if (gummiImages.indexOf(event.target) != -1) {
