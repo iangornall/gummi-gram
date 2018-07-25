@@ -37,13 +37,20 @@ var gummiData = [
             url: 'https://images.unsplash.com/photo-1524821902305-7b8dc7ed4e41?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a70045eb8f99f2a44c2ac0f244de7afe'}
           ];
 
-var showModal = function(event) {
+var showModal = function(i) {
   var modalContainers = document.querySelectorAll('.modal-container');
   var modals = document.querySelectorAll('.modal');
   cover.classList.add('cover-show');
-  modalContainers[event.target.dataset.index].classList.add('show');
-  modals[event.target.dataset.index].classList.add('fix-click');
+  modalContainers[i].classList.add('show');
+  modals[i].classList.add('fix-click');
 }
+
+var increaseLikes = function(button, i) {
+  gummiData[i].likes++;
+  button.textContent = 'Likes: ' + gummiData[i].likes;
+  var modalLikes = document.querySelectorAll('.modal-likes')[i];
+  modalLikes.textContent = 'Likes: ' + gummiData[i].likes;
+};
 
 var hideModal = function() {
   var modalContainers = document.querySelectorAll('.modal-container');
@@ -68,12 +75,11 @@ for (var i = 0; i < gummiData.length; i++) {
 
   var gummiImageContainer = document.createElement('div');
   gummiImageContainer.classList.add('gummi-image-container');
-  gummiItem.appendChild(gummiImageContainer)
+  gummiItem.appendChild(gummiImageContainer);
 
   var gummiImage = document.createElement('img');
   gummiImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=400&q=60');
   gummiImage.classList.add('gummi-image');
-  gummiImage.dataset.index = i;
   gummiImageContainer.appendChild(gummiImage);
 
   var gummiCaption = document.createElement('p');
@@ -89,18 +95,26 @@ for (var i = 0; i < gummiData.length; i++) {
   gummiLikeButton.textContent = 'Likes: ' + gummiData[i].likes;
   gummiLikeButton.classList.add('gummi-button');
   gummiButtonContainer.appendChild(gummiLikeButton);
-  gummiLikeButton.dataset.index = i;
-
-  gummiLikeButton.addEventListener('click', (event) => {
-    gummiData[event.currentTarget.dataset.index].likes++;
-    event.currentTarget.textContent = 'Likes: ' + gummiData[event.currentTarget.dataset.index].likes;
-  })
 
   var gummiCommentButton = document.createElement('button');
   gummiCommentButton.textContent = 'Comments: ' + gummiData[i].comments.length;
   gummiCommentButton.classList.add('gummi-button', 'comment-button');
-  gummiCommentButton.dataset.index = i;
   gummiButtonContainer.appendChild(gummiCommentButton);
+
+  // Event listeners
+  (function () {
+    var currentI = i;
+    var likeButton = gummiLikeButton;
+    var imageClick = function() {
+      showModal(currentI);
+    };
+    var likeClick = function() {
+      increaseLikes(likeButton, currentI);
+    }
+    gummiImage.addEventListener('click', imageClick);
+    gummiLikeButton.addEventListener('click', likeClick);
+    gummiCommentButton.addEventListener('click', imageClick);
+  })();
 }
 
 // Create Modals
@@ -110,10 +124,18 @@ for (var i = 0; i < gummiData.length; i++) {
   var modal = document.createElement('div');
   modal.classList.add('modal');
 
+  var modalImageContainer = document.createElement('div');
+  modalImageContainer.classList.add('modal-image-container');
+  modal.appendChild(modalImageContainer);
+
+  var modalInline = document.createElement('div');
+  modalInline.classList.add('modal-inline');
+  modalImageContainer.appendChild(modalInline);
+
   var modalImage = document.createElement('img');
   modalImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=800&q=60');
   modalImage.classList.add('modal-image');
-  modal.appendChild(modalImage);
+  modalImageContainer.appendChild(modalImage);
 
   var modalContents = document.createElement('div');
   modalContents.classList.add('modal-contents');
@@ -121,10 +143,7 @@ for (var i = 0; i < gummiData.length; i++) {
   var modalClose = document.createElement('div');
   modalClose.textContent = 'X';
   modalClose.classList.add('modal-close');
-  modalClose.dataset.index = i;
   modalContents.appendChild(modalClose);
-
-  modalClose.addEventListener('click', hideModal);
 
   var modalCommentContainer = document.createElement('div');
   modalCommentContainer.classList.add('modal-comment-container');
@@ -144,21 +163,37 @@ for (var i = 0; i < gummiData.length; i++) {
 
   modal.appendChild(modalContents);
 
+  var modalArrowLeft = document.createElement('div');
+  modalArrowLeft.textContent = '<';
+  modalArrowLeft.classList.add('modal-arrow-left');
+  modal.appendChild(modalArrowLeft);
+
+  var modalArrowRight = document.createElement('div');
+  modalArrowRight.textContent = '>';
+  modalArrowRight.classList.add('modal-arrow-right');
+  modal.appendChild(modalArrowRight);
+
   modalContainer.appendChild(modal);
   document.body.appendChild(modalContainer);
+  // Event Listeners
+  modalClose.addEventListener('click', hideModal);
+  (function() {
+    var currentI = i;
+    var showLastModal = function() {
+      console.log('click');
+      hideModal();
+      showModal((gummiData.length + currentI - 1) % gummiData.length);
+    }
+    var showNextModal = function() {
+      hideModal();
+      showModal((currentI + 1) % gummiData.length);
+    }
+    modalArrowLeft.addEventListener('click', showLastModal);
+    modalArrowRight.addEventListener('click', showNextModal);
+  })();
 }
 
 // Event Listeners
-var gummiImages = document.querySelectorAll('.gummi-image');
-for (var i = 0; i < gummiImages.length; i++) {
-  gummiImages[i].addEventListener('click', showModal);
-}
-
-var commentButtons = document.querySelectorAll('.comment-button');
-for (var i = 0; i < commentButtons.length; i++) {
-  commentButtons[i].addEventListener('click', showModal);
-}
-
 var cover = document.querySelector('.cover');
 cover.addEventListener('click', () => {
   if (event.target == event.currentTarget){

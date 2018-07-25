@@ -19,6 +19,7 @@ body {
   flex-wrap: wrap;
   width: 100%;
   margin: 0 auto;
+  padding: 0;
   justify-content: center;
 }
 .gummi-item {
@@ -80,20 +81,47 @@ body {
   transition: opacity 1s;
 }
 .modal {
+  position: relative;
   display: flex;
-  width: 80%;
   height: 80%;
+  max-width: 80%;
   align-items: stretch;
   margin: 0 auto;
   justify-content: center;
   pointer-events: none;
 }
-.modal-image {
+.modal-arrow-left, .modal-arrow-right {
+  position: absolute;
+  top: 50%;
+  color: #FFF;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.modal-arrow-left {
+  left: -7%;
+}
+.modal-arrow-right {
+  right: -7%;
+}
+
+.modal-image-container {
   height: 100%;
-  background: #FFF;
+  max-width: 75%;
+  text-align: left;
+  background: #000;
+}
+.modal-inline {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.modal-image {
+  max-height: 100%;
+  max-width: 100%;
+  vertical-align: middle;
 }
 .modal-contents {
-  width: 25%;
+  width: 20em;
   background: #FFF;
   display: flex;
   flex-direction: column;
