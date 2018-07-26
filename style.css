@@ -79,12 +79,13 @@ body {
   align-items: flex-start;
   pointer-events: none;
   transition: opacity 1s;
+  overflow-y: auto;
 }
 .modal {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
   max-width: 100%;
   align-items: stretch;
   margin: 0 auto;
