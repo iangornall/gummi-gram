@@ -83,8 +83,8 @@ body {
 .modal {
   position: relative;
   display: flex;
-  height: 80%;
-  max-width: 80%;
+  height: 100%;
+  max-width: 100%;
   align-items: stretch;
   margin: 0 auto;
   justify-content: center;
@@ -100,10 +100,10 @@ body {
   background: rgba(0, 0, 0, 0.5);
 }
 .modal-arrow-left {
-  right: 100%;
+  left: 0;
 }
 .modal-arrow-right {
-  left: 100%;
+  right: 0;
 }
 
 .modal-image-container {
@@ -161,4 +161,19 @@ body {
 }
 .fix-click {
   pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    height: 80%;
+    max-width: 80%;
+  }
+  .modal-arrow-left {
+    left: auto;
+    right: 100%;
+  }
+  .modal-arrow-right {
+    left: 100%;
+    right: auto;
+  }
 }

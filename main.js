@@ -67,6 +67,7 @@ var hideModal = function() {
 var cardList = document.querySelector('.card-list');
 
 // Create list
+
 for (var i = 0; i < gummiData.length; i++) {
   var cardItem = document.createElement('li');
   cardItem.classList.add('card-item');
