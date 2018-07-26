@@ -64,56 +64,56 @@ var hideModal = function() {
   }
 }
 
-var gummiList = document.querySelector('.gummi-list');
+var cardList = document.querySelector('.card-list');
 
 // Create list
 for (var i = 0; i < gummiData.length; i++) {
-  var gummiItem = document.createElement('li');
-  gummiItem.classList.add('gummi-item');
-  gummiItem.tabIndex = 0;
-  gummiList.appendChild(gummiItem);
+  var cardItem = document.createElement('li');
+  cardItem.classList.add('card-item');
+  cardItem.tabIndex = 0;
+  cardList.appendChild(cardItem);
 
-  var gummiImageContainer = document.createElement('div');
-  gummiImageContainer.classList.add('gummi-image-container');
-  gummiItem.appendChild(gummiImageContainer);
+  var cardImageContainer = document.createElement('div');
+  cardImageContainer.classList.add('card-image-container');
+  cardItem.appendChild(cardImageContainer);
 
-  var gummiImage = document.createElement('img');
-  gummiImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=400&q=60');
-  gummiImage.classList.add('gummi-image');
-  gummiImageContainer.appendChild(gummiImage);
+  var cardImage = document.createElement('img');
+  cardImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=400&q=60');
+  cardImage.classList.add('card-image');
+  cardImageContainer.appendChild(cardImage);
 
-  var gummiCaption = document.createElement('p');
-  gummiCaption.textContent = gummiData[i].caption;
-  gummiCaption.classList.add('gummi-caption');
-  gummiItem.appendChild(gummiCaption);
+  var cardCaption = document.createElement('p');
+  cardCaption.textContent = gummiData[i].caption;
+  cardCaption.classList.add('card-caption');
+  cardItem.appendChild(cardCaption);
 
-  var gummiButtonContainer = document.createElement('div');
-  gummiButtonContainer.classList.add('gummi-button-container');
-  gummiItem.appendChild(gummiButtonContainer);
+  var cardButtonContainer = document.createElement('div');
+  cardButtonContainer.classList.add('card-button-container');
+  cardItem.appendChild(cardButtonContainer);
 
-  var gummiLikeButton = document.createElement('button');
-  gummiLikeButton.textContent = 'Likes: ' + gummiData[i].likes;
-  gummiLikeButton.classList.add('gummi-button');
-  gummiButtonContainer.appendChild(gummiLikeButton);
+  var cardLikeButton = document.createElement('button');
+  cardLikeButton.textContent = 'Likes: ' + gummiData[i].likes;
+  cardLikeButton.classList.add('card-button');
+  cardButtonContainer.appendChild(cardLikeButton);
 
-  var gummiCommentButton = document.createElement('button');
-  gummiCommentButton.textContent = 'Comments: ' + gummiData[i].comments.length;
-  gummiCommentButton.classList.add('gummi-button', 'comment-button');
-  gummiButtonContainer.appendChild(gummiCommentButton);
+  var cardCommentButton = document.createElement('button');
+  cardCommentButton.textContent = 'Comments: ' + gummiData[i].comments.length;
+  cardCommentButton.classList.add('card-button', 'comment-button');
+  cardButtonContainer.appendChild(cardCommentButton);
 
   // Event listeners
   (function () {
     var currentI = i;
-    var likeButton = gummiLikeButton;
+    var likeButton = cardLikeButton;
     var imageClick = function() {
       showModal(currentI);
     };
     var likeClick = function() {
       increaseLikes(likeButton, currentI);
     }
-    gummiImage.addEventListener('click', imageClick);
-    gummiLikeButton.addEventListener('click', likeClick);
-    gummiCommentButton.addEventListener('click', imageClick);
+    cardImage.addEventListener('click', imageClick);
+    cardLikeButton.addEventListener('click', likeClick);
+    cardCommentButton.addEventListener('click', imageClick);
   })();
 }
 
@@ -190,6 +190,15 @@ for (var i = 0; i < gummiData.length; i++) {
     }
     modalArrowLeft.addEventListener('click', showLastModal);
     modalArrowRight.addEventListener('click', showNextModal);
+    var mc = new Hammer(modal);
+    mc.on('swipeleft swiperight', (event) => {
+      if (event.type === 'swiperight') {
+        showLastModal();
+      }
+      if (event.type === 'swipeleft') {
+        showNextModal();
+      }
+    });
   })();
 }
 
