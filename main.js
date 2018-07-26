@@ -143,6 +143,10 @@ gummiData.forEach((gummiItem, i) => {
   var modalContents = document.createElement('div');
   modalContents.classList.add('modal-contents');
 
+  var modalSpacer = document.createElement('div');
+  modalSpacer.classList.add('spacer');
+  modalContents.appendChild(modalSpacer);
+
   var modalClose = document.createElement('div');
   modalClose.textContent = 'X';
   modalClose.classList.add('modal-close');
