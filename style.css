@@ -84,6 +84,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
   max-width: 100%;
   align-items: stretch;
   margin: 0 auto;
@@ -127,6 +128,7 @@ body {
   vertical-align: middle;
 }
 .modal-contents {
+  flex: 1;
   width: 100%;
   background: #FFF;
   display: flex;
@@ -144,6 +146,7 @@ body {
   cursor: pointer;
 }
 .modal-comment-container {
+  flex: 1;
   text-align: center;
 }
 .modal-likes {
@@ -204,6 +207,7 @@ body {
     max-width: 75%;
   }
   .modal-contents {
+    flex: auto;
     width: 20em;
   }
 }
