@@ -90,7 +90,6 @@ body {
   align-items: stretch;
   margin: 0 auto;
   justify-content: center;
-  pointer-events: none;
 }
 .modal-arrow-left, .modal-arrow-right {
   position: absolute;
@@ -171,6 +170,7 @@ body {
 }
 .show {
   opacity: 1;
+  pointer-events: auto;
 }
 .fix-click {
   pointer-events: auto;
