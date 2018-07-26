@@ -67,11 +67,9 @@ var hideModal = function() {
 var cardList = document.querySelector('.card-list');
 
 // Create list
-
-for (var i = 0; i < gummiData.length; i++) {
+gummiData.forEach((gummiItem, i) => {
   var cardItem = document.createElement('li');
   cardItem.classList.add('card-item');
-  cardItem.tabIndex = 0;
   cardList.appendChild(cardItem);
 
   var cardImageContainer = document.createElement('div');
@@ -79,12 +77,12 @@ for (var i = 0; i < gummiData.length; i++) {
   cardItem.appendChild(cardImageContainer);
 
   var cardImage = document.createElement('img');
-  cardImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=400&q=60');
+  cardImage.setAttribute('src', gummiItem.url + '&auto=format&fit=crop&w=400&q=60');
   cardImage.classList.add('card-image');
   cardImageContainer.appendChild(cardImage);
 
   var cardCaption = document.createElement('p');
-  cardCaption.textContent = gummiData[i].caption;
+  cardCaption.textContent = gummiItem.caption;
   cardCaption.classList.add('card-caption');
   cardItem.appendChild(cardCaption);
 
@@ -93,33 +91,27 @@ for (var i = 0; i < gummiData.length; i++) {
   cardItem.appendChild(cardButtonContainer);
 
   var cardLikeButton = document.createElement('button');
-  cardLikeButton.textContent = 'Likes: ' + gummiData[i].likes;
+  cardLikeButton.textContent = 'Likes: ' + gummiItem.likes;
   cardLikeButton.classList.add('card-button');
   cardButtonContainer.appendChild(cardLikeButton);
 
   var cardCommentButton = document.createElement('button');
-  cardCommentButton.textContent = 'Comments: ' + gummiData[i].comments.length;
+  cardCommentButton.textContent = 'Comments: ' + gummiItem.comments.length;
   cardCommentButton.classList.add('card-button', 'comment-button');
   cardButtonContainer.appendChild(cardCommentButton);
-
-  // Event listeners
-  (function () {
-    var currentI = i;
-    var likeButton = cardLikeButton;
-    var imageClick = function() {
-      showModal(currentI);
-    };
-    var likeClick = function() {
-      increaseLikes(likeButton, currentI);
-    }
-    cardImage.addEventListener('click', imageClick);
-    cardLikeButton.addEventListener('click', likeClick);
-    cardCommentButton.addEventListener('click', imageClick);
-  })();
-}
+  var imageClick = function() {
+    showModal(i);
+  };
+  var likeClick = function() {
+    increaseLikes(cardLikeButton, i);
+  }
+  cardImage.addEventListener('click', imageClick);
+  cardLikeButton.addEventListener('click', likeClick);
+  cardCommentButton.addEventListener('click', imageClick);
+});
 
 // Create Modals
-for (var i = 0; i < gummiData.length; i++) {
+gummiData.forEach((gummiItem, i) => {
   var modalContainer = document.createElement('div');
   modalContainer.classList.add('modal-container');
   var modal = document.createElement('div');
@@ -134,9 +126,19 @@ for (var i = 0; i < gummiData.length; i++) {
   modalImageContainer.appendChild(modalInline);
 
   var modalImage = document.createElement('img');
-  modalImage.setAttribute('src', gummiData[i].url + '&auto=format&fit=crop&w=800&q=60');
+  modalImage.setAttribute('src', gummiItem.url + '&auto=format&fit=crop&w=800&q=60');
   modalImage.classList.add('modal-image');
   modalImageContainer.appendChild(modalImage);
+
+  var modalImageArrowLeft = document.createElement('div');
+  modalImageArrowLeft.textContent = '<';
+  modalImageArrowLeft.classList.add('modal-arrow-left', 'modal-image-arrow');
+  modalImageContainer.appendChild(modalImageArrowLeft);
+
+  var modalImageArrowRight = document.createElement('div');
+  modalImageArrowRight.textContent = '>';
+  modalImageArrowRight.classList.add('modal-arrow-right', 'modal-image-arrow');
+  modalImageContainer.appendChild(modalImageArrowRight);
 
   var modalContents = document.createElement('div');
   modalContents.classList.add('modal-contents');
@@ -151,14 +153,14 @@ for (var i = 0; i < gummiData.length; i++) {
   modalContents.appendChild(modalCommentContainer);
 
 
-  for (var j = 0; j < gummiData[i].comments.length; j++) {
+  for (var j = 0; j < gummiItem.comments.length; j++) {
     var modalComment = document.createElement('p');
-    modalComment.textContent = gummiData[i].comments[j];
+    modalComment.textContent = gummiItem.comments[j];
     modalCommentContainer.appendChild(modalComment);
   }
 
   var modalLikes = document.createElement('div');
-  modalLikes.textContent = 'Likes: ' + gummiData[i].likes;
+  modalLikes.textContent = 'Likes: ' + gummiItem.likes;
   modalLikes.classList.add('modal-likes');
   modalContents.appendChild(modalLikes);
 
@@ -166,42 +168,41 @@ for (var i = 0; i < gummiData.length; i++) {
 
   var modalArrowLeft = document.createElement('div');
   modalArrowLeft.textContent = '<';
-  modalArrowLeft.classList.add('modal-arrow-left');
+  modalArrowLeft.classList.add('modal-arrow-left', 'modal-container-arrow');
   modal.appendChild(modalArrowLeft);
 
   var modalArrowRight = document.createElement('div');
   modalArrowRight.textContent = '>';
-  modalArrowRight.classList.add('modal-arrow-right');
+  modalArrowRight.classList.add('modal-arrow-right', 'modal-container-arrow');
   modal.appendChild(modalArrowRight);
 
   modalContainer.appendChild(modal);
   document.body.appendChild(modalContainer);
   // Event Listeners
   modalClose.addEventListener('click', hideModal);
-  (function() {
-    var currentI = i;
-    var showLastModal = function() {
-      console.log('click');
-      hideModal();
-      showModal((gummiData.length + currentI - 1) % gummiData.length);
+  var showLastModal = function() {
+    console.log('click');
+    hideModal();
+    showModal((gummiData.length + i - 1) % gummiData.length);
+  }
+  var showNextModal = function() {
+    hideModal();
+    showModal((i + 1) % gummiData.length);
+  }
+  modalArrowLeft.addEventListener('click', showLastModal);
+  modalImageArrowLeft.addEventListener('click', showLastModal);
+  modalArrowRight.addEventListener('click', showNextModal);
+  modalImageArrowRight.addEventListener('click', showNextModal);
+  var modalSwipeHandler = new Hammer(modal);
+  modalSwipeHandler.on('swipeleft swiperight', (event) => {
+    if (event.type === 'swiperight') {
+      showLastModal();
     }
-    var showNextModal = function() {
-      hideModal();
-      showModal((currentI + 1) % gummiData.length);
+    if (event.type === 'swipeleft') {
+      showNextModal();
     }
-    modalArrowLeft.addEventListener('click', showLastModal);
-    modalArrowRight.addEventListener('click', showNextModal);
-    var mc = new Hammer(modal);
-    mc.on('swipeleft swiperight', (event) => {
-      if (event.type === 'swiperight') {
-        showLastModal();
-      }
-      if (event.type === 'swipeleft') {
-        showNextModal();
-      }
-    });
-  })();
-}
+  });
+});
 
 // Event Listeners
 var cover = document.querySelector('.cover');
