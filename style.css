@@ -139,7 +139,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0.5em;
+  padding: 1em 1.2em;
   margin: 0.5em;
   color: white;
   background: rgba(0, 0, 0, 0.2);
@@ -184,6 +184,7 @@ body {
     align-items: center;
   }
   .modal {
+    min-height: 0;
     height: 80%;
     max-width: 80%;
     flex-direction: row;
