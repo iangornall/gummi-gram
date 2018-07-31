@@ -41,7 +41,9 @@ var showModal = function(i) {
   var modalContainers = document.querySelectorAll('.modal-container');
   var modals = document.querySelectorAll('.modal');
   cover.classList.add('cover-show');
-  modalContainers[i].classList.add('show');
+  modalContainers[(modalContainers.length + i - 1) % modalContainers.length].classList.add('right');
+  modalContainers[i].classList.add('show', 'center');
+  modalContainers[(modalContainers.length + i + 1) % modalContainers.length].classList.add('left');
   modals[i].classList.add('fix-click');
 }
 
@@ -57,7 +59,11 @@ var hideModal = function() {
   var modals = document.querySelectorAll('.modal');
   cover.classList.remove('cover-show');
   for (var i = 0; i < modalContainers.length; i++) {
-    modalContainers[i].classList.remove('show');
+    if (Array(modalContainers[i].classList).includes('center')) {
+      modalContainers[i].classList.remove('center');
+    } else {
+      modalContainers[i].classList.remove('show', 'left', 'right', 'center');
+    }
   }
   for (var i = 0; i < modals.length; i++) {
     modals[i].classList.remove('fix-click');

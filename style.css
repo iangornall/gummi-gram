@@ -78,7 +78,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   pointer-events: none;
-  transition: opacity 1s;
+  transition: opacity 1s ease-in, transform 1s;
   overflow-y: auto;
 }
 .modal {
@@ -177,6 +177,15 @@ body {
 }
 .spacer {
   flex: 1;
+}
+.center {
+  transform: translate(0);
+}
+.left {
+  transform: translate(-100%);
+}
+.right {
+  transform: translate(100%);
 }
 
 @media (min-width: 768px) {
