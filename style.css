@@ -18,6 +18,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
   margin: 0 auto;
   padding: 0;
   justify-content: center;
@@ -78,7 +80,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   pointer-events: none;
-  transition: opacity 1s ease-in, transform 1s;
+  transition: opacity 200ms ease-in, transform 300ms;
   overflow-y: auto;
 }
 .modal {
@@ -145,9 +147,16 @@ body {
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
+.modal-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding: 1em 2em;
+}
 .modal-comment-container {
   flex: 1;
   text-align: center;
+  padding: 2em;
 }
 .modal-likes {
   margin: 1em;
@@ -175,6 +184,9 @@ body {
 .fix-click {
   pointer-events: auto;
 }
+.remove-scroll {
+  pointer-events: none;
+}
 .spacer {
   flex: 1;
 }
@@ -191,6 +203,7 @@ body {
 @media (min-width: 768px) {
   .modal-container {
     align-items: center;
+    transition: opacity 300ms ease-in, transform 1s;
   }
   .modal {
     height: 80%;

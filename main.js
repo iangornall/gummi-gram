@@ -1,38 +1,38 @@
 var gummiData = [
             {likes: 1,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Organized gummis are happy gummis! 😇', 'Eww.. brown gummis!? 🤮', 'I like sour gummis. 🤩'],
             caption: 'Gummi Bins',
             url: 'https://images.unsplash.com/photo-1507696460378-fc372bb90ed3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=156afbbc2bdbc645d1ec16cf7c042573'},
             {likes: 2,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Mmm.. crystals. 🤡', 'Wormy texture. 🧐', 'Pretty colors! 😍'],
             caption: 'Glistening Gummi Worm',
             url: 'https://images.unsplash.com/photo-1516747773440-e114ee0d3c07?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c00ef145d0c418619cc1d8ada8d4c7ea'},
             {likes: 3,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Yummy symmetry 👍', 'Candy corn or gummies? 🧐', 'I eat food. 😋'],
             caption: 'Gummi Board',
             url: 'https://images.unsplash.com/photo-1507032248589-d4fabcffff6c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=38178e995c50a28f124135169eab6bcb'},
             {likes: 4,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Tasty! 🍭', 'Spear the evil gummified fruit. 😈', 'Too much yellow 🤪'],
             caption: 'Gummi Skewers',
             url: 'https://images.unsplash.com/photo-1523872449040-e9f3c438d0bb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9d68f73cbb13b743488760ff49d41985'},
             {likes: 6,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Gummi eggi goodness 😁', 'Hippity hoppity gummity. 🐰', 'Happy Easter! 😇'],
             caption: 'Easter Gummi',
             url: 'https://images.unsplash.com/photo-1523374311137-07f0aa18832b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=01aefcf755374bbff49f661d2a62935c'},
             {likes: 7,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Have your gummi and eat it, too! 🎂', 'Pretty pastelicious 🌈', 'Confetti Gummetti!!! 🤩'],
             caption: 'Gummi Yummy',
             url: 'https://images.unsplash.com/photo-1523872352054-4d35b4c058f0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8a954816295c5c5c843b422eda7ea1a0'},
             {likes: 8,
-            comments: ['this', 'that', 'the other'],
+            comments: ['A healthier gummi option. 🤗', 'How will the gummi fit through the straw!? 😧', 'Blend before consumption. 🙃'],
             caption: 'Gummi Smoothie',
             url: 'https://images.unsplash.com/photo-1502579347381-2a885e40f6b0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0cc5078735c75706097cf4ea13ac627'},
             {likes: 9,
-            comments: ['this', 'that', 'the other'],
+            comments: ['Old school gummi goodness. 🤣', 'Gummi color blending 🙌',],
             caption: 'Classic Gummi Worms',
             url: 'https://images.unsplash.com/photo-1529573978589-43d04495b62f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=79a83be17690e9a25e2e0d6d60e84ebd'},
             {likes: 10,
-            comments: ['this', 'that', 'the other'],
+            comments: ['My eyes!  The colors... 😱', 'I am lost in sugary chaos! 😜', 'Is that a purple toucan?  Yes! 🤡'],
             caption: 'Gummi Blast',
             url: 'https://images.unsplash.com/photo-1524821902305-7b8dc7ed4e41?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a70045eb8f99f2a44c2ac0f244de7afe'}
           ];
@@ -106,6 +106,7 @@ gummiData.forEach((gummiItem, i) => {
   cardCommentButton.classList.add('card-button', 'comment-button');
   cardButtonContainer.appendChild(cardCommentButton);
   var imageClick = function() {
+    cardList.classList.add('remove-scroll');
     showModal(i);
   };
   var likeClick = function() {
@@ -162,12 +163,21 @@ gummiData.forEach((gummiItem, i) => {
   modalCommentContainer.classList.add('modal-comment-container');
   modalContents.appendChild(modalCommentContainer);
 
+  var modalTitle = document.createElement('h1');
+  modalTitle.classList.add('modal-title');
+  modalTitle.textContent = gummiItem.caption;
+  modalCommentContainer.appendChild(modalTitle);
+
 
   for (var j = 0; j < gummiItem.comments.length; j++) {
     var modalComment = document.createElement('p');
     modalComment.textContent = gummiItem.comments[j];
     modalCommentContainer.appendChild(modalComment);
   }
+
+  var modalSpacer2 = document.createElement('div');
+  modalSpacer2.classList.add('spacer');
+  modalContents.appendChild(modalSpacer2);
 
   var modalLikes = document.createElement('div');
   modalLikes.textContent = 'Likes: ' + gummiItem.likes;
@@ -189,7 +199,10 @@ gummiData.forEach((gummiItem, i) => {
   modalContainer.appendChild(modal);
   document.body.appendChild(modalContainer);
   // Event Listeners
-  modalClose.addEventListener('click', hideModal);
+  modalClose.addEventListener('click', () => {
+    cardList.classList.remove('remove-scroll');
+    hideModal();
+  });
   var showLastModal = function() {
     console.log('click');
     hideModal();
@@ -206,10 +219,10 @@ gummiData.forEach((gummiItem, i) => {
   var modalSwipeHandler = new Hammer(modal);
   modalSwipeHandler.on('swipeleft swiperight', (event) => {
     if (event.type === 'swiperight') {
-      showLastModal();
+      showNextModal();
     }
     if (event.type === 'swipeleft') {
-      showNextModal();
+      showLastModal();
     }
   });
 });
