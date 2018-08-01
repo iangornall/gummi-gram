@@ -82,24 +82,26 @@ body {
   pointer-events: none;
   transition: opacity 200ms ease-in, transform 300ms;
   overflow-y: auto;
+  background: #FFF;
 }
 .modal {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  height: 100%;
+  overflow-y: auto;
   max-width: 100%;
   align-items: stretch;
   margin: 0 auto;
   justify-content: center;
 }
 .modal-arrow-left, .modal-arrow-right {
-  position: absolute;
+  position: fixed;
   top: 50%;
   transform:translate(0, -50%);
   margin: auto 0;
   color: #FFF;
-  font-size: 2rem;
+  font-size: 1.75rem;
   cursor: pointer;
   padding: 0.5em;
   background: rgba(0, 0, 0, 0.3);
@@ -138,11 +140,12 @@ body {
   justify-content: space-between;
 }
 .modal-close {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
-  padding: 0.5em;
+  padding: 0.5em 0.7em;
   margin: 0.5em;
+  font-size: 1.25rem;
   color: white;
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -204,11 +207,20 @@ body {
   .modal-container {
     align-items: center;
     transition: opacity 300ms ease-in, transform 1s;
+    background: none;
   }
   .modal {
     height: 80%;
+    min-height: auto;
+    overflow-y: initial;
     max-width: 80%;
     flex-direction: row;
+  }
+  .modal-close {
+    position: absolute;
+  }
+  .modal-arrow-left, .modal-arrow-right {
+    position: absolute;
   }
   .modal-arrow-left {
     left: auto;
